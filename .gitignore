@@ -1,0 +1,27 @@
+# --- Project Data & Privacy ---
+# Exclude raw images and personal data
+dataset/
+found_photos/
+
+# --- Generated Files ---
+# Exclude the serialized database (it is rebuilt locally)
+*.pkl
+
+# --- Python System Files ---
+# Bytecode and cache
+__pycache__/
+*.pyc
+
+# --- Virtual Environments ---
+venv/
+.venv/
+env/
+
+# --- IDE Settings ---
+# VS Code & PyCharm local settings
+.vscode/
+.idea/
+
+# --- OS Junk ---
+.DS_Store
+Thumbs.db
