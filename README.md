@@ -2,25 +2,28 @@
 
 A Python tool I built to solve a real problem: **finding my graduation photos among 11,000 other images.**
 
-Instead of scrolling for hours, I wrote this script to automate the process using **Face Recognition**.
+Instead of scrolling for hours, I wrote this script to automate the process using **Face Recognition**. I also built an automated **Web Scraper** to gather test datasets efficiently.
 
 ## 💡 The Story (Why I built this)
 
 After my graduation, the photographers gave us access to a huge folder with thousands of unsorted photos. Finding myself was a nightmare.
 I realized this was a perfect opportunity to use Python and Computer Vision to save time—not just for me, but for anyone in a similar situation.
 
+To stress-test my solution without violating privacy, I built a custom **Web Scraper** to collect celebrity datasets (e.g., Red Carpet events) and simulate the "finding a needle in a haystack" scenario.
+
 ## 🚀 What it does
 
-* **It scans the crowd:** Reads through a folder of mixed photos.
-* **It learns your face:** Takes one selfie as a reference.
-* **It finds matches:** Automatically copies every photo you appear in into a new folder.
+1.  **The Collector (Scraper):** Automatically downloads images from the web to build a dataset.
+2.  **The Indexer:** Scans the crowd and creates a biometric database.
+3.  **The Searcher:** Takes one selfie and finds all matches in seconds.
 
 ## 🛠️ Tech Stack
 
 * **Python 3**
-* **DeepFace** (for face recognition logic)
-* **Pickle** (for saving the data)
-* **OpenCV & YuNet** (for detecting faces in crowds)
+* **Selenium & WebDriver** (for Web Scraping & Automation)
+* **DeepFace & OpenCV** (for Computer Vision logic)
+* **YuNet** (High-performance Face Detection)
+* **Pickle** (for Data Serialization)
 
 ## ⚙️ Project Structure
 
@@ -28,7 +31,8 @@ I realized this was a perfect opportunity to use Python and Computer Vision to s
 Smart-Event-Photo-Sorter/
 │
 ├── src/
-│   ├── indexer.py    # Analyzes the photos and saves the data
+│   ├── scraper.py    # (NEW) Automates image collection from the web
+│   ├── indexer.py    # Analyzes the photos and builds the database
 │   └── searcher.py   # Finds the specific person
 │
 ├── dataset/          # Where the photos go
@@ -36,46 +40,56 @@ Smart-Event-Photo-Sorter/
 ├── requirements.txt
 └── README.md
 📥 How to run it
-Clone the repo:
+1. Clone the repo:
 
 Bash
 
 git clone https://github.com/AnstArvanitis/Smart-Event-Photo-Sorter.git
-Install requirements:
+
+2. Install requirements:
 
 Bash
 
 pip install -r requirements.txt
-Step 1: Indexing (Run this once) Put the event photos in dataset/raw_gallery and run:
+3. Step 1: Collection (Optional) If you don't have photos, let the bot gather them for you:
+
+Bash
+
+python src/scraper.py
+Downloads images to dataset/raw_gallery.
+
+4. Step 2: Indexing (The Heavy Lifting) Run the indexer to analyze the gallery:
 
 Bash
 
 python src/indexer.py
-This creates a faces.pkl file so we don't have to scan images every time.
+Creates a faces.pkl file for instant lookups later.
 
-Step 2: Searching Put your selfie in dataset/target/target.jpg and run:
+5. Step 3: Searching Put your selfie in dataset/target/target.jpg and run:
 
 Bash
 
 python src/searcher.py
-Check the found_photos folder for results!
+✅ Result: Check the found_photos folder!
 
 🧠 Challenges & What I Learned
 During this project, I faced some interesting technical challenges:
 
-1. Speed vs. Accuracy
-Scanning 11,000 photos takes a long time.
+1. Data Collection & Lazy Loading
+Websites often don't load all images at once.
 
-My Solution: I split the code into two parts. The Indexer runs once and saves the face data into a file (pickle). The Searcher just reads that file. This makes searching instant!
+Problem: My scraper only found the first 10 images.
 
-2. Detecting Faces in Crowds
-At first, I used the default OpenCV detector, but it missed faces that were turned sideways or far away.
+Solution: I implemented a Selenium script that simulates user scrolling (window.scrollTo) to trigger lazy loading and capture high-quality images dynamically.
 
-My Solution: I switched to YuNet, a modern deep-learning detector which is much better at finding faces in difficult angles.
+2. Speed vs. Accuracy
+Scanning thousands of photos takes a long time.
 
-3. Privacy
-Since these are personal photos, I didn't want to upload them to any cloud API.
+Solution: I split the architecture. The Indexer runs once and saves data to a binary file. The Searcher runs instantly .
 
-My Solution: Everything runs locally on the computer. No data leaves the machine.
+3. Detecting Faces in Crowds
+Standard detection methods failed on side-profiles or crowded shots.
+
+Solution: I integrated YuNet, a modern deep-learning detector within DeepFace, which significantly improved detection rates in challenging angles.
 
 Created by Anastasis - Junior Python Developer.

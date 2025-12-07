@@ -2,3 +2,7 @@ deepface
 tf-keras
 pandas
 scipy
+opencv-python
+selenium
+webdriver-manager
+requests

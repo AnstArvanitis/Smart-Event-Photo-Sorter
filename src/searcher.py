@@ -18,7 +18,7 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "found_photos")
 # AI Settings
 MODEL_NAME = "VGG-Face"
 DETECTOR_BACKEND = "yunet"
-THRESHOLD = 0.83 # Adjust based on testing (lower is stricter)
+THRESHOLD = 0.7 # Adjust based on testing (lower is stricter)
 
 def find_my_photos():
     print("------------------------------------------------")
